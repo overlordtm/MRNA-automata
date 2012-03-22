@@ -21,31 +21,62 @@
 
 function [ ret ] = demo ()
 	
-	Nlights = 5;
+	Nlights = 11;
 	lights = zeros(1, Nlights);
 	lights(ceil(Nlights/2)) = 1
 
 	steps = 0;
-
-	alpha = 1;
-	beta = 0;
-	p = [];
-	pi = [1; 0];
-	while(chkwin(lights) != 1 && steps < 100)
+	
+	player1 = @L22;
+	alpha1 = 1;
+	beta1 = 0;
+	p1 = [];
+	pi1 = [1; 0];
+	
+	player2 = @PCA;
+	alpha2 = 1;
+	beta2 = 0;
+	p2 = [];
+	pi2 = [0; 1];
+	
+	while( steps < 100 )
 		steps++;
-		[alpha, pi, p] = L22(alpha, beta, pi, p);
-		beta = getfeedback(2, alpha);
-		if(alpha == 1)
-			printf('Go left!\n');
+
+		[alpha1, pi1, p1] = player1(alpha1, beta1, pi1, p1);
+		beta1 = getfeedback(1, alpha1);
+		if(alpha1 == 1)
+			printf('Player1: left!\n');
 			lights = left(lights);
 		else
-			printf('Go right\n');
+			printf('Player1: right\n');
 			lights = right(lights);
 		endif
+
+		if chkwin(lights) == 1, break, end
+
+		[alpha2, pi2, p2] = player2(alpha2, beta2, pi2, p2);
+		beta2 = getfeedback(2, alpha2);
+		if(alpha2 == 1)
+			printf('Player2: left!\n');
+			lights = left(lights);
+		else
+			printf('Player2: right\n');
+			lights = right(lights);
+		endif
+
+		if chkwin(lights) == 1, break, end
+
 		lights
 	end
-	printf('END of game!\n');
-
+	printf('END of game! ');
+	lights
+	if(lights(1) == 1)
+		printf('Player 1 won!\n');
+	elseif (lights(end) == 1)
+		printf('Player 2 won!\n');
+	else
+		printf('MAXSTEP limit.\n');
+	endif
 endfunction
 
 function [ l ] = left (lights)

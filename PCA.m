@@ -27,4 +27,6 @@ function [ alpha, pi, p ] = PCA()
 		alpha = 2; %R2
 	endif
 
+	pi = [1;0];
+	p = [1;0];
 endfunction
