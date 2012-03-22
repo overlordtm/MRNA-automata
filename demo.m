@@ -19,32 +19,45 @@
 ## Author: Andraz Vrhovec <az@zeus>
 ## Created: 2012-03-22
 
-function [ ret ] = demo ()
+function [ count ] = demo () 
+
+	n = 0;
+	count = [0, 0];
+	while n < 100
+		n++;
+		winner = game(11, 0.2, @L22, @L2n2);
+		if (winner > 0)
+			count(winner)++;
+		endif
+	end
+
+endfunction
+
+function [ ret ] = game (Nlights, p, player1, player2)
 	
-	Nlights = 11;
 	lights = zeros(1, Nlights);
 	lights(ceil(Nlights/2)) = 1
 
 	steps = 0;
 	
-	player1 = @L22;
 	alpha1 = 1;
 	beta1 = 0;
 	p1 = [];
-	pi1 = [1; 0];
+	pi1 = [];
 	
-	player2 = @PCA;
 	alpha2 = 1;
 	beta2 = 0;
 	p2 = [];
-	pi2 = [0; 1];
+	pi2 = [];
 	
-	while( steps < 100 )
+	while( steps < 1000 )
 		steps++;
 
 		[alpha1, pi1, p1] = player1(alpha1, beta1, pi1, p1);
 		beta1 = getfeedback(1, alpha1);
-		if(alpha1 == 1)
+		
+		r = rand();
+		if ( (r < p && alpha1 == 1) || ( r >= p && alpha1 == 2) ) 
 			printf('Player1: left!\n');
 			lights = left(lights);
 		else
@@ -56,7 +69,9 @@ function [ ret ] = demo ()
 
 		[alpha2, pi2, p2] = player2(alpha2, beta2, pi2, p2);
 		beta2 = getfeedback(2, alpha2);
-		if(alpha2 == 1)
+		
+		r = rand();
+		if ( (r < p && alpha2 == 1) || ( r >= p && alpha2 == 2) ) 
 			printf('Player2: left!\n');
 			lights = left(lights);
 		else
@@ -72,10 +87,13 @@ function [ ret ] = demo ()
 	lights
 	if(lights(1) == 1)
 		printf('Player 1 won!\n');
+		ret = 1;
 	elseif (lights(end) == 1)
 		printf('Player 2 won!\n');
+		ret = 2;
 	else
 		printf('MAXSTEP limit.\n');
+		ret = -1;
 	endif
 endfunction
 

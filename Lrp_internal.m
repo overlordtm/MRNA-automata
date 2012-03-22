@@ -19,27 +19,9 @@
 ## Author: Andraz Vrhovec <az@zeus>
 ## Created: 2012-03-22
 
-function [ alpha, pi, p ] = L22(alpha, beta, pi, p)
+function [ alpha, pi, p ] = Lrp(alpha, beta, pi, p)
 
-	if ( length(pi) != 2 )
-		pi = [1;0];
-	endif
-	
-	G = eye(2);
-
-	if(beta == 0)
-		F = eye(2); %reward, stay in same state
-	else
-		F = flipud(eye(2)); %penalty, change state
-	endif
-
-	pi = F' * pi;
-	p = G' * pi;
-
-	if(p(1) == 1)
-		alpha = 1;
-	else
-		alpha = 2;
-	endif
+	a = 0
+	b = 
 
 endfunction

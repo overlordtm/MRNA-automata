@@ -20,10 +20,32 @@
 ## Created: 2012-03-22
 
 function [ alpha, pi, p ] = L2n2(alpha, beta, pi, p)
+
+	N = 4;
+	if( length(pi) != 2*N )
+		pi = zeros(2*N, 1);
+		pi(N+1) = 1;
+	endif
+
+	G = [ ones(N, 1), zeros(N, 1) ; zeros(N, 1), ones(N, 1) ];
 	
 	if( beta == 0 ) %reward
-		pi
-
+		block = [1, zeros(1, N-1); eye(N-1), zeros(N-1, 1)];
+		F = [block, zeros(N); zeros(N), block];
+	else
+		block = [zeros(N-1, 1), eye(N-1); zeros(1, N)];
+		F = [block, zeros(N); zeros(N), block];
+		F(N,2*N) = 1;
+		F(2*N, N) = 1;
+	endif
 	
+	pi = F' * pi;
+	p = G' * pi;
+	
+	if(p(1) == 1)
+		alpha = 1;
+	else
+		alpha = 2;
+	endif
 
 endfunction
