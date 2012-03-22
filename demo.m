@@ -23,12 +23,17 @@ function [ ret ] = demo ()
 	PCA()
 endfunction
 
-function [ r ] = PCA()
+function [ p ] = PCA()
 
-	if (rand() > 0.5)
-		r = [0, 1];
+	if (rand() < 0.5)
+		p = [0, 1];
 	else
-		r = [1, 0];
+		p = [1, 0];
 	endif
+
+endfunction
+
+function [ p ] = L22()
+
 
 endfunction
