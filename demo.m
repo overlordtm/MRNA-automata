@@ -20,20 +20,54 @@
 ## Created: 2012-03-22
 
 function [ ret ] = demo ()
-	PCA()
+	
+	Nlights = 5;
+	lights = zeros(1, Nlights);
+	lights(ceil(Nlights/2)) = 1
+
+	steps = 0;
+
+	alpha = 1;
+	beta = 0;
+	p = [];
+	pi = [1; 0];
+	while(chkwin(lights) != 1 && steps < 100)
+		steps++;
+		[alpha, pi, p] = L22(alpha, beta, pi, p);
+		beta = getfeedback(2, alpha);
+		if(alpha == 1)
+			printf('Go left!\n');
+			lights = left(lights);
+		else
+			printf('Go right\n');
+			lights = right(lights);
+		endif
+		lights
+	end
+	printf('END of game!\n');
+
 endfunction
 
-function [ p ] = PCA()
+function [ l ] = left (lights)
+	l = circshift(lights', -1)';
+endfunction
 
-	if (rand() < 0.5)
-		p = [0, 1];
+function [ l ] = right (lights)
+	l = circshift(lights', 1)';
+endfunction
+
+function [ win ] = chkwin ( lights )
+	if ((lights(end) == 1) || (lights(1) == 1))
+		win = 1;
 	else
-		p = [1, 0];
+		win = 0;
 	endif
-
 endfunction
 
-function [ p ] = L22()
-
-
+function [ beta ] = getfeedback(player, alpha)
+	if( player == alpha)
+		beta = 0;
+	else
+		beta = 1;
+	endif
 endfunction
