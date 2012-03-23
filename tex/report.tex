@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{graphicx}
 \author{Andraž Vrhovec}
 \title{MRNA - seminar 1}
 \begin{document}
@@ -118,10 +119,44 @@ Primerjava avtomatov med seboj je bila izvedena podobno kot primerjava z PCA, le
 
 \section{Primerjava parametrov korekcijskih shem}
 
+V prvem primeru sem primerjal dva $L_{r-p}$ avtomata z razlicnimi parametri. Pri avtomatu z vecjimi parametri se vidi vecje odklone v verjetnosti izbire skozi cas, vedar se proti koncu ujameta kar se vidi tudi na razmerju zmag, ki je na koncu blizu 1.
+
+V drugem primeru sem primerjal $L_{r-p}$ z $L_{r-i}$ z enakim a. Visi se veliko lepse ucenje $L_{r-i}$ avtomata, kar se pozna tudi na koncnem razmerju zmag $95:5$. Iz teh rezultatov zaklucujem da je $L_{r-i}$ avtomat boljsi za okolja kjer je verjetnost kaznovanja fiksna, vendar neznana. Dopuscam moznost da se $L_{r-p}$ boljse obnasa v dinamicnih okoljih, kjer se verjetnost kaznovanja spreminja, saj je njegov proces ucenja bolj fleksibilen v obe smeri.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.4]{fig_lrp.png} 
+\end{center}
+\caption{Primerjava dveh $L_{r-p}$ avtomatov z razlicnimi parametri. Graf prikazuje verjetnost izbire za avtomat ugodne akcije (za igralca 1 je to levo, za drugega desno)}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.4]{fig_lrp_lri.png} 
+\end{center}
+\caption{Primerjava $L_{r-p}$ in $L_{r-i}$ avtomatov z enakim a. Graf prikazuje verjetnost izbire za avtomat ugodne akcije (za igralca 1 je to levo, za drugega desno)}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.4]{lrp_pen.png} 
+\end{center}
+\caption{Casovna odvisnost $M(n)$ pri avtomatu $L_{r-p}$}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.4]{lri_pen.png} 
+\end{center}
+\caption{Casovna odvisnost $M(n)$ pri avtomatu $L_{r-i}$}
+\end{figure}
+
 \section{Igra avtomata z clovekom}
+
+Preizkusil sem se v igri z $L_{2n,2}$ in $L_{r-i}$ pri N=7. Za manjse N je igra za cloveka se obvladljiva in je mozno premagati avtomat v vsaj polovici primerov. Ko pa N narasca pa kolicina podatkov za cloveka postane neobvladljiva in se avtomati izkazejo dosti bolje.
 
 \section{Zakljucek}
 
-Predvsem se bil presenecen nad uspesnostjo avtomata $L_{2n,2}$, ki kljub svoji preprostosti kaze veliko zmoznost ucenja v tem primeru in premaguje druge, po zasnovi naprednejse avtomate.
+Predvsem se bil presenecen nad uspesnostjo avtomata $L_{2n,2}$, ki kljub svoji preprostosti kaze veliko zmoznost ucenja v tem primeru in premaguje druge, po zasnovi naprednejse avtomate. Kot drugi najboljsi se izkaze $L_{r-i}$
 
 \end{document}
