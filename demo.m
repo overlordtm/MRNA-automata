@@ -21,16 +21,18 @@
 
 function [ count ] = demo () 
 
+	%penalty(1);
+
 	n = 0;
 	count = [0, 0];
-	while n < 1
+	while n < 100
 		n++;
-		[ winner, h1, h2 ] = game(87, 0.55, @Lrp, @L2n2);
+		[ winner, h1, h2 ] = game(51, 0.8, @Lrp, @Lrp);
 		clf;
 		hold on;
 		plot(h1(1, :), 'b');
-		plot(h2(1, :), 'r');
-		legend('igralec1', 'igralec2');
+		plot(h2(2, :), 'r');
+		legend('igralec1 (a=0.1, b=0.05)', 'igralec2(a=0.2, b=0.1)');
 		if (winner > 0)
 			count(winner)++;
 		endif
@@ -60,7 +62,7 @@ function [ ret, phistory1, phistory2 ] = game (Nlights, p, player1, player2)
 	while( steps < 1000 )
 		steps++;
 
-		[alpha1, pi1, p1] = player1(alpha1, beta1, pi1, p1, 0.2, 0.1);
+		[alpha1, pi1, p1] = player1(alpha1, beta1, pi1, p1, 0.1, 0.05);
 		phistory1 = [phistory1, p1];		
 
 		r = rand();
@@ -76,7 +78,7 @@ function [ ret, phistory1, phistory2 ] = game (Nlights, p, player1, player2)
 
 		if chkwin(lights) == 1, break, end
 
-		[alpha2, pi2, p2] = player2(alpha2, beta2, pi2, p2, 0.05, 0.03);
+		[alpha2, pi2, p2] = player2(alpha2, beta2, pi2, p2, 0.2, 0.1);
 		phistory2 = [phistory2, p2];
 		
 		r = rand();
@@ -124,10 +126,30 @@ function [ win ] = chkwin ( lights )
 	endif
 endfunction
 
-function [ beta ] = getfeedback(player, alpha)
-	if( player == alpha)
-		beta = 0;
-	else
-		beta = 1;
-	endif
+function [ beta ] = penalty(c)
+	
+	alpha = -1;
+	beta = 0;
+	pi = [0.5; 0.5];
+	p = [0.5; 0.5];
+	
+	h = p;
+	M = [(1-c) * 0.5 + c * 0.5]
+
+	n = 0;
+	while n < 50
+		n++;
+		[alpha, pi, p] = L2n2(alpha, beta, pi, p)
+		h = [h p];
+		M = [M, (1-c)*p(1) + c * p(2)];
+		
+		r = rand();
+		if (r < c && alpha == 1) || (r > c && alpha == 2)
+			beta = 0;
+		else
+			beta = 1;
+		endif
+	end
+
+	plot(h(1, :))
 endfunction

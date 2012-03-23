@@ -37,7 +37,7 @@ function [ alpha, pi, p ] = L22(alpha, beta, pi, p)
 	pi = F' * pi;
 	p = G' * pi;
 
-	if(p(1) == 1)
+	if(rand() < p(1))
 		alpha = 1;
 	else
 		alpha = 2;

@@ -21,7 +21,7 @@
 
 function [ alpha, pi, p ] = L2n2(alpha, beta, pi, p)
 
-	N = 4;
+	N = 3;
 	if( length(pi) != 2*N )
 		pi = zeros(2*N, 1);
 		pi(N+round(rand())) = 1;
@@ -42,7 +42,7 @@ function [ alpha, pi, p ] = L2n2(alpha, beta, pi, p)
 	pi = F' * pi;
 	p = G' * pi;
 	
-	if(p(1) == 1)
+	if(rand() < p(1))
 		alpha = 1;
 	else
 		alpha = 2;
