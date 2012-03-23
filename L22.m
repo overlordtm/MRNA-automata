@@ -22,7 +22,8 @@
 function [ alpha, pi, p ] = L22(alpha, beta, pi, p)
 
 	if ( length(pi) != 2 )
-		pi = [1;0];
+		a = round(rand());
+		pi = [1-a;a];
 	endif
 	
 	G = eye(2);

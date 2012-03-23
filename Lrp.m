@@ -19,9 +19,15 @@
 ## Author: Andraz Vrhovec <az@zeus>
 ## Created: 2012-03-22
 
-function [ alpha, pi, p ] = Lrp(alpha, beta, pi, p)
+function [ alpha, pi, p ] = Lrp(alpha, beta, pi, p, a, b)
 
-	a = 0
-	b = 
+	if( exist('a') == 0 )
+		a = 0.3;
+	endif
+	if( exist('b') == 0 )
+		b = 0.1;
+	endif
+
+	[ alpha, pi, p ] = Lrp_internal(a, b, alpha, beta, pi, p);
 
 endfunction

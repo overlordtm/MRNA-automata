@@ -19,9 +19,29 @@
 ## Author: Andraz Vrhovec <az@zeus>
 ## Created: 2012-03-22
 
-function [ alpha, pi, p ] = Lrp(alpha, beta, pi, p)
+function [ alpha, pi, p ] = Lrp_internal(a, b, alpha, beta, pi, p)
 
-	a = 0
-	b = 
+	if( length(p) != 2 )
+		p = [0.5; 0.5];
+	endif
 
+	if(alpha == 1 && beta == 0)
+		p(1) = p(1) * (1-a) + a;
+		p(2) = p(2) * (1-a);
+	elseif(alpha == 1 && beta == 1)
+		p(1) = p(1) * (1-b);
+		p(2) = p(2) * (1-b) + b;
+	elseif(alpha == 2 && beta == 0)
+		p(1) = p(1) * (1-a);
+		p(2) = p(2) * (1-a) + a;
+	elseif(alpha == 2 && beta == 1)
+		p(1) = p(1) * (1-b) + b;
+		p(2) = p(2) * (1-b);
+	endif
+
+	if(rand() < p(1))
+		alpha = 1;
+	else
+		alpha = 2;
+	endif
 endfunction

@@ -24,7 +24,7 @@ function [ alpha, pi, p ] = L2n2(alpha, beta, pi, p)
 	N = 4;
 	if( length(pi) != 2*N )
 		pi = zeros(2*N, 1);
-		pi(N+1) = 1;
+		pi(N+round(rand())) = 1;
 	endif
 
 	G = [ ones(N, 1), zeros(N, 1) ; zeros(N, 1), ones(N, 1) ];

@@ -23,9 +23,14 @@ function [ count ] = demo ()
 
 	n = 0;
 	count = [0, 0];
-	while n < 100
+	while n < 1
 		n++;
-		winner = game(11, 0.2, @L22, @L2n2);
+		[ winner, h1, h2 ] = game(87, 0.55, @Lrp, @L2n2);
+		clf;
+		hold on;
+		plot(h1(1, :), 'b');
+		plot(h2(1, :), 'r');
+		legend('igralec1', 'igralec2');
 		if (winner > 0)
 			count(winner)++;
 		endif
@@ -33,50 +38,56 @@ function [ count ] = demo ()
 
 endfunction
 
-function [ ret ] = game (Nlights, p, player1, player2)
+function [ ret, phistory1, phistory2 ] = game (Nlights, p, player1, player2)
 	
 	lights = zeros(1, Nlights);
 	lights(ceil(Nlights/2)) = 1
 
 	steps = 0;
 	
-	alpha1 = 1;
+	alpha1 = -1;
 	beta1 = 0;
 	p1 = [];
 	pi1 = [];
+	phistory1 = [];
 	
-	alpha2 = 1;
+	alpha2 = -1;
 	beta2 = 0;
 	p2 = [];
 	pi2 = [];
+	phistory2 = [];
 	
 	while( steps < 1000 )
 		steps++;
 
-		[alpha1, pi1, p1] = player1(alpha1, beta1, pi1, p1);
-		beta1 = getfeedback(1, alpha1);
-		
+		[alpha1, pi1, p1] = player1(alpha1, beta1, pi1, p1, 0.2, 0.1);
+		phistory1 = [phistory1, p1];		
+
 		r = rand();
 		if ( (r < p && alpha1 == 1) || ( r >= p && alpha1 == 2) ) 
 			printf('Player1: left!\n');
 			lights = left(lights);
+			beta1 = 0;
 		else
 			printf('Player1: right\n');
 			lights = right(lights);
+			beta1 = 1;
 		endif
 
 		if chkwin(lights) == 1, break, end
 
-		[alpha2, pi2, p2] = player2(alpha2, beta2, pi2, p2);
-		beta2 = getfeedback(2, alpha2);
+		[alpha2, pi2, p2] = player2(alpha2, beta2, pi2, p2, 0.05, 0.03);
+		phistory2 = [phistory2, p2];
 		
 		r = rand();
-		if ( (r < p && alpha2 == 1) || ( r >= p && alpha2 == 2) ) 
+		if ( (r < p && alpha2 == 1) || ( r > p && alpha2 == 2) ) 
 			printf('Player2: left!\n');
 			lights = left(lights);
+			beta2 = 1;
 		else
 			printf('Player2: right\n');
 			lights = right(lights);
+			beta2 = 0;
 		endif
 
 		if chkwin(lights) == 1, break, end
